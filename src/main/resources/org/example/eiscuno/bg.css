@@ -1,0 +1,9 @@
+.border-pane-background {
+    -fx-background-image: url("images/background_uno.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+.image-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
