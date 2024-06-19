@@ -65,4 +65,8 @@ public class Card {
     public String getColor() {
         return color;
     }
+    public String setColor() {return color;}
+    public boolean isSpecialCard() {
+        return value.equals("+2") || value.equals("+4") || value.equals("WILD") || value.equals("SKIP") || value.equals("REVERSE");
+    }
 }

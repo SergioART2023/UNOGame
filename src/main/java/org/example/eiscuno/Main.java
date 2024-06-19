@@ -1,7 +1,6 @@
 package org.example.eiscuno;
 
 import javafx.application.Application;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.example.eiscuno.view.GameUnoStage;
 
@@ -29,8 +28,6 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-
         GameUnoStage.getInstance();
-
     }
 }
