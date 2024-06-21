@@ -18,8 +18,12 @@ public class Card {
      *
      * @param url the URL of the card image
      * @param value of the card
+     * @param color the color of the card
      */
     public Card(String url, String value, String color) {
+        if (value == null || color == null) {
+            throw new IllegalArgumentException("Value and color cannot be null");
+        }
         this.url = url;
         this.value = value;
         this.color = color;
@@ -49,6 +53,9 @@ public class Card {
         return cardImageView;
     }
 
+    public boolean isNumberCard() {
+        return value.matches("[0-9]");
+    }
     /**
      * Gets the image of the card.
      *
@@ -65,8 +72,20 @@ public class Card {
     public String getColor() {
         return color;
     }
-    public String setColor() {return color;}
-    public boolean isSpecialCard() {
-        return value.equals("+2") || value.equals("+4") || value.equals("WILD") || value.equals("SKIP") || value.equals("REVERSE");
+
+    public boolean isReverseCard() {
+        return value.equals("REVERSE");
+    }
+
+    public boolean isSkipCard() {
+        return value.equals("SKIP");
+    }
+
+    public boolean isWildCard() {
+        return value.equals("WILD") || value.equals("FOUR_WILD_DRAW") ||value.equals("TWO_WILD_DRAW");
+    }
+    @Override
+    public String toString() {
+        return "Color: " + this.color + ", Valor: " + this.value;
     }
 }
