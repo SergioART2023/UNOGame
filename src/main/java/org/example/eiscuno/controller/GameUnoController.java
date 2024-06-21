@@ -142,26 +142,19 @@ public class GameUnoController implements IThreadSingUNOMachine {
         }
         return -1;
     }
-    /**
-     * Handles the "Back" button action to show the previous set of cards.
-     *
-     * @param event the action event
-     */
     @FXML
     void onHandleBack(ActionEvent event) {
         if (this.posInitCardToShow > 0) {
             this.posInitCardToShow--;
+            printCardsHumanPlayer();
         }
     }
-    /**
-     * Handles the "Next" button action to show the next set of cards.
-     *
-     * @param event the action event
-     */
+
     @FXML
     void onHandleNext(ActionEvent event) {
         if (this.posInitCardToShow < this.humanPlayer.getCardsPlayer().size() - 4) {
             this.posInitCardToShow++;
+            printCardsHumanPlayer();
         }
     }
     /**
