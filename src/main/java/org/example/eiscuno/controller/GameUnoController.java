@@ -12,14 +12,9 @@ import org.example.eiscuno.model.machine.ThreadSingUNOMachine;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 import org.example.eiscuno.view.GameUnoStage;
-import javafx.scene.control.Button;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Scale;
 import org.example.eiscuno.view.alertbox.AlertBox;
 
 
@@ -33,16 +28,6 @@ public class GameUnoController implements IThreadSingUNOMachine {
     private GridPane gridPaneCardsPlayer;
     @FXML
     private ImageView tableImageView;
-    @FXML
-    private Button buttonBack;
-    @FXML
-    private Button buttonNext;
-    @FXML
-    private Button buttonDeckCards;
-    @FXML
-    private Button buttonOut;
-    @FXML
-    private Button buttonUno;
     private Player humanPlayer;
     private Player machinePlayer;
     private Deck deck;
@@ -74,11 +59,6 @@ public class GameUnoController implements IThreadSingUNOMachine {
 
         threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView, this.deck, this.gameUno, this.threadPlayMachine, this.humanPlayer);
         threadPlayMachine.start();
-        System.out.println(" Tus cartas: ");
-        humanPlayer.printCardsPlayer();
-        System.out.println(" ");
-        System.out.println(" Cartas de la máquina: ");
-        machinePlayer.printCardsPlayer();
     }
     /**
      * Initializes the variables for the game.
@@ -115,7 +95,6 @@ public class GameUnoController implements IThreadSingUNOMachine {
                                 printCardsHumanPlayer();
                                 primeraCartaPuesta = true;
                                 System.out.println("\nTus cartas: ");
-                                humanPlayer.printCardsPlayer();
                             } else {
                                 alertBox.showMessageError("Error", "Carta no encontrada. Intenta otra vez. \uD83C\uDCCF");
                             }
@@ -130,8 +109,6 @@ public class GameUnoController implements IThreadSingUNOMachine {
                             gameUno.isWildCards(card, threadPlayMachine, machinePlayer);
                             gameUno.playCard(card);
                             printCardsHumanPlayer();
-                            System.out.println("\nTus cartas: ");
-                            humanPlayer.printCardsPlayer();
                             deck.discardCard(card);
                         } else {
                             alertBox.showMessageError("Error", "Carta no encontrada. Intenta otra vez. \uD83C\uDCCF");
@@ -174,23 +151,7 @@ public class GameUnoController implements IThreadSingUNOMachine {
     void onHandleBack(ActionEvent event) {
         if (this.posInitCardToShow > 0) {
             this.posInitCardToShow--;
-            printCardsHumanPlayer();
         }
-    }
-    @FXML
-    void onHandleMouseEnteredBack(MouseEvent event) {
-        Scale scale = new Scale(1.1,1.1);
-        buttonBack.getTransforms().add(scale);
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setColor(Color.DARKRED);
-        dropShadow.setRadius(20);
-        buttonBack.setEffect(dropShadow);
-    }
-
-    @FXML
-    void onHandleMouseExitedBack(MouseEvent event) {
-        buttonBack.getTransforms().clear();
-        buttonBack.setEffect(null);
     }
     /**
      * Handles the "Next" button action to show the next set of cards.
@@ -201,22 +162,7 @@ public class GameUnoController implements IThreadSingUNOMachine {
     void onHandleNext(ActionEvent event) {
         if (this.posInitCardToShow < this.humanPlayer.getCardsPlayer().size() - 4) {
             this.posInitCardToShow++;
-            printCardsHumanPlayer();
         }
-    }
-    @FXML
-    void onHandleMouseEnteredNext(MouseEvent event) {
-        Scale scale = new Scale(1.1,1.1);
-        buttonNext.getTransforms().add(scale);
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setColor(Color.DARKRED);
-        dropShadow.setRadius(20);
-        buttonNext.setEffect(dropShadow);
-    }
-    @FXML
-    void onHandleMouseExitedNext(MouseEvent event) {
-        buttonNext.getTransforms().clear();
-        buttonNext.setEffect(null);
     }
     /**
      * Handles the action of taking a card.
@@ -231,29 +177,13 @@ public class GameUnoController implements IThreadSingUNOMachine {
             deck.discardCard(newCard);
             printCardsHumanPlayer();
             System.out.println("\n Tus cartas: ");
-            humanPlayer.printCardsPlayer();
             threadPlayMachine.setHasPlayerPlayed(true);
             System.out.println("\nTurno de la maquina");
         } else {
             deck.refillDeckFromDiscardPile();
             alertBox.showMessage("Mazo","El mazo se acabo!\nPero fue llenado nuevamente. \uD83C\uDCCF");
-            System.out.println("\nNo hay más cartas en el mazo.\n");
         }
     }
-    @FXML
-    void onHandleMouseEnteredDeckCards(MouseEvent event) {
-        Scale scale = new Scale(1.1,1.1);
-        buttonDeckCards.getTransforms().add(scale);
-        Glow glow = new Glow(0.8);
-        buttonDeckCards.setEffect(glow);
-    }
-
-    @FXML
-    void onHandleMouseExitedDeckCards(MouseEvent event) {
-        buttonDeckCards.getTransforms().clear();
-        buttonDeckCards.setEffect(null);
-    }
-
     /**
      * Handles the action of saying "Uno".
      *
@@ -271,54 +201,19 @@ public class GameUnoController implements IThreadSingUNOMachine {
             alertBox.showMessageError("Error", "No puedes decir 'UNO' porque no tienes exactamente una carta. Toma una carta como penitencia. \uD83D\uDE14");
             // Penalización: por ejemplo, el jugador debe tomar 2 cartas
             gameUno.eatCard(humanPlayer, 1);
-            printCardsHumanPlayer();
             System.out.println(" Tus cartas: ");
-            humanPlayer.printCardsPlayer();
         }
     }
-
-    @FXML
-    void onHandleMouseEnteredUno(MouseEvent event) {
-        Scale scale = new Scale(1.1,1.1);
-        buttonUno.getTransforms().add(scale);
-        Glow glow = new Glow(0.8);
-        buttonUno.setEffect(glow);
-    }
-
-    @FXML
-    void onHandleMouseExitedUno(MouseEvent event) {
-        buttonUno.getTransforms().clear();
-        buttonUno.setEffect(null);
-    }
-
     @Override
     public void onMachineSaysUno()  {
         machineTime = System.currentTimeMillis();
         machineSaidUno = true;
         checkUno();
     }
-
     @FXML
-    void OnHnableExitButton(ActionEvent event) {
+    void OnHanbleExitButton(ActionEvent event) {
         GameUnoStage.deleteInstance();
     }
-
-    @FXML
-    void onHandleMouseEnteredOut(MouseEvent event) {
-        Scale scale = new Scale(1.1,1.1);
-        buttonOut.getTransforms().add(scale);
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setColor(Color.WHITE);
-        dropShadow.setRadius(20);
-        buttonOut.setEffect(dropShadow);
-    }
-
-    @FXML
-    void onHandleMouseExitedOut(MouseEvent event) {
-        buttonOut.getTransforms().clear();
-        buttonOut.setEffect(null);
-    }
-
     private void checkUno() {
         System.out.println("\nMaquina lo dijo en "+machineTime);
         System.out.println("\njugador lo dijo en "+playerTime);
@@ -328,7 +223,6 @@ public class GameUnoController implements IThreadSingUNOMachine {
                 System.out.println("\n¡Máquina dijo UNO más rápido! Jugador debe comer una carta.\n");
                 String playerMachime = machinePlayer.getTypePlayer();
                 gameUno.haveSingOne(playerMachime);
-                printCardsHumanPlayer();
             } else {
                 System.out.println("\n¡Jugador dijo UNO más rápido!\n");
                 alertBox.showMessage("UNO","¡Has dicho UNO más rápido! \uD83D\uDE04");

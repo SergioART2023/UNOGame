@@ -41,7 +41,6 @@ public class ThreadPlayMachine extends Thread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                // Aqui iria la logica de colocar la carta
                 putCardOnTheTable();
                 hasPlayerPlayed = false;
             }
@@ -68,11 +67,8 @@ public class ThreadPlayMachine extends Thread {
 
             unoMachine();
             System.out.println("\nCartas de la máquina: ");
-            machinePlayer.printCardsPlayer();
         } catch (IndexOutOfBoundsException e) {
-            // Manejar la excepción cuando no hay cartas en la mesa
             System.out.println("No hay cartas en la mesa.");
-            // Aquí podrías tomar acciones adicionales si es necesario
         }
     }
 

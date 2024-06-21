@@ -90,7 +90,6 @@ public class GameUno implements IGameUno {
             machinePlayer.addCard(this.deck.takeCard());
         } else {
             humanPlayer.addCard(this.deck.takeCard());
-            humanPlayer.printCardsPlayer();
         }
     }
 

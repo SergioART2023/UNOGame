@@ -68,7 +68,7 @@
                   <RowConstraints />
                </rowConstraints>
             </GridPane>
-            <Button mnemonicParsing="false" text="Salir" />
+            <Button mnemonicParsing="false" onAction="#OnHanbleExitButton" text="Salir" />
          </children>
       </HBox>
    </top>

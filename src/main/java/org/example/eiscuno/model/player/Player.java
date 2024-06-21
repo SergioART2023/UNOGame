@@ -78,9 +78,4 @@ public class Player implements IPlayer {
         // Si no se encuentra ninguna carta jugable, retornar null
         return null;
     }
-    public void printCardsPlayer() {
-        for (Card card : this.cardsPlayer) {
-            System.out.println(card);
-        }
-    }
 }
