@@ -22,7 +22,7 @@ public class ThreadPlayMachine extends Thread {
     private Deck deck;
     public AlertBox alertBox = new AlertBox();
 
-    public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView) {
+    public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView,Deck deck, GameUno gameUno, ThreadPlayMachine threadPlayMachine,Player humanPlayer) {
         this.table = table;
         this.machinePlayer = machinePlayer;
         this.tableImageView = tableImageView;
