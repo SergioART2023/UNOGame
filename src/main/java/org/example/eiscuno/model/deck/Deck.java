@@ -2,6 +2,7 @@ package org.example.eiscuno.model.deck;
 
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.view.alertbox.AlertBox;
 
 import java.util.Collections;
 import java.util.Stack;
@@ -11,12 +12,14 @@ import java.util.Stack;
  */
 public class Deck {
     private Stack<Card> deckOfCards;
-
+    private Stack<Card> discardPile;
+    public AlertBox alertBox = new AlertBox();
     /**
      * Constructs a new deck of Uno cards and initializes it.
      */
     public Deck() {
         deckOfCards = new Stack<>();
+        discardPile= new Stack<>();
         initializeDeck();
     }
 

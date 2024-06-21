@@ -131,7 +131,7 @@ public class GameUnoController {
 
     @FXML
     void onHandleUno(ActionEvent event) {
-        gameUno.haveSungOne("HUMAN_PLAYER");
+        gameUno.haveSingOne("HUMAN_PLAYER");
     }
 
     private boolean canPlayCard(Card card) {

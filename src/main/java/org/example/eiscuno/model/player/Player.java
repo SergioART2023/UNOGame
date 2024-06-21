@@ -63,4 +63,24 @@ public class Player implements IPlayer {
     public String getTypePlayer() {
         return typePlayer;
     }
+    public Card findPlayableCard(String currentColor, String currentValue) {
+        for (Card card : getCardsPlayer()) {
+            if (card.getColor().equals(currentColor) || card.getValue().equals(currentValue)) {
+                return card;
+            }
+        }
+        // Si no se encuentra una carta coincidente, buscar una carta comodín
+        for (Card card : getCardsPlayer()) {
+            if (card.isWildCard()) {
+                return card;
+            }
+        }
+        // Si no se encuentra ninguna carta jugable, retornar null
+        return null;
+    }
+    public void printCardsPlayer() {
+        for (Card card : this.cardsPlayer) {
+            System.out.println(card);
+        }
+    }
 }

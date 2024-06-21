@@ -33,7 +33,7 @@ public interface IGameUno {
      *
      * @param playerWhoSang the identifier of the player who shouted "Uno"
      */
-    void haveSungOne(String playerWhoSang);
+    void haveSingOne(String playerWhoSang);
 
     /**
      * Retrieves the current visible cards of the human player starting from a specific position.

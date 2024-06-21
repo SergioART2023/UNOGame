@@ -2,8 +2,11 @@ package org.example.eiscuno.model.game;
 
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.deck.Deck;
+import org.example.eiscuno.model.machine.ThreadPlayMachine;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
+import org.example.eiscuno.view.GameUnoStage;
+import org.example.eiscuno.view.alertbox.AlertBox;
 
 /**
  * Represents a game of Uno.
@@ -15,6 +18,7 @@ public class GameUno implements IGameUno {
     private Player machinePlayer;
     private Deck deck;
     private Table table;
+    public AlertBox alertBox = new AlertBox();
 
     /**
      * Constructs a new GameUno instance.
@@ -38,11 +42,10 @@ public class GameUno implements IGameUno {
     @Override
     public void startGame() {
         for (int i = 0; i < 10; i++) {
-            if (i < 5) {
-                humanPlayer.addCard(this.deck.takeCard());
-            } else {
-                machinePlayer.addCard(this.deck.takeCard());
-            }
+            humanPlayer.addCard(this.deck.takeCard());
+            machinePlayer.addCard(this.deck.takeCard());
+            Card currentCard = deck.takeCard();
+            deck.discardCard(currentCard);
         }
     }
 
@@ -67,6 +70,13 @@ public class GameUno implements IGameUno {
     @Override
     public void playCard(Card card) {
         this.table.addCardOnTheTable(card);
+        String playerType = humanPlayer.getTypePlayer();
+        String playerMachine = machinePlayer.getTypePlayer();
+        // Agregar la carta a la mesa
+        this.table.addCardOnTheTable(card);
+        // Realizar acciones posteriores al movimiento
+        postMoveActions(playerType);
+        postMoveActions(playerMachine);
     }
 
     /**
@@ -75,11 +85,12 @@ public class GameUno implements IGameUno {
      * @param playerWhoSang The player who shouted "Uno".
      */
     @Override
-    public void haveSungOne(String playerWhoSang) {
+    public void haveSingOne(String playerWhoSang) {
         if (playerWhoSang.equals("HUMAN_PLAYER")) {
             machinePlayer.addCard(this.deck.takeCard());
         } else {
             humanPlayer.addCard(this.deck.takeCard());
+            humanPlayer.printCardsPlayer();
         }
     }
 
@@ -109,6 +120,60 @@ public class GameUno implements IGameUno {
      */
     @Override
     public Boolean isGameOver() {
-        return null;
+        GameUnoStage.deleteInstance();
+        ThreadPlayMachine.currentThread().interrupt();
+        return true;
+    }
+    public boolean canPlayCard(Card card) {
+        Card topCard = table.getTopCard();
+        return card.getColor().equals(topCard.getColor()) ||
+                card.getValue().equals(topCard.getValue()) ||
+                card.isWildCard();
+    }
+
+    public void isWildCards(Card card, ThreadPlayMachine threadPlayMachine, Player player){
+        if (card.getValue() == "SKIP"){
+            threadPlayMachine.setHasPlayerPlayed(false);
+            System.out.println("\nUtilizaste una carta de Skip.\n");
+        } else if (card.getValue() =="RESERVE") {
+            threadPlayMachine.setHasPlayerPlayed(false);
+            System.out.println("\nUtilizaste una carta de Reverse.\n");
+        } else if (card.getValue() =="TWO_WILD_DRAW") {
+            eatCard(player, 2);
+            System.out.println("\nUtilizaste un TWO_WILD_DRAW, " +player.getTypePlayer()+ " comio 2 cartas\n");
+            threadPlayMachine.setHasPlayerPlayed(true);
+        } else if (card.getValue() =="WILD") {
+            //openColorSelectionDialog();//Falta que el color elegido por el jugador se use para que el jugador tenga que poner el mismo
+            System.out.println("\nUtilizaste un WILD, ");
+        }else if (card.getValue() == "FOUR_WILD_DRAW") {
+            eatCard(player, 4);
+            //openColorSelectionDialog();//Falta que el color elegido por el jugador se use para que el jugador tenga que poner el mismo
+            System.out.println("\nUtilizaste un FOUR_WILD_DRAW, " +player.getTypePlayer()+ " comio 2 cartas\n");
+            threadPlayMachine.setHasPlayerPlayed(true);
+        }
+        else {
+            threadPlayMachine.setHasPlayerPlayed(true);
+        }
+    }
+
+    /**
+     * Verifica si un jugador ha ganado después de jugar una carta.
+     *
+     * @param playerType El tipo de jugador que realizó el movimiento.
+     */
+    private void postMoveActions(String playerType) {
+        if (playerType.equals(humanPlayer.getTypePlayer())) {
+            if (humanPlayer.getCardsPlayer().isEmpty()) {
+                alertBox.showMessage("GANADOR", "Has ganado! \uD83C\uDFC6");
+                System.out.println("\nFin de la partida!\n");
+                isGameOver();
+            }
+        } else if (playerType.equals(machinePlayer.getTypePlayer())) {
+            if (machinePlayer.getCardsPlayer().isEmpty()) {
+                alertBox.showMessage("GAME OVER", "La maquina ha ganado! \uD83E\uDD16 ");
+                System.out.println("\nFin de la partida!\n");
+                isGameOver();
+            }
+        }
     }
 }
