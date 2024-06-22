@@ -145,4 +145,8 @@ public class ThreadPlayMachine extends Thread {
             setHasPlayerPlayed(true);
         }
     }
+
+    public boolean getHasPlayerPlayed() {
+        return hasPlayerPlayed;
+    }
 }
