@@ -171,7 +171,7 @@ public class GameUnoController implements IThreadSingUNOMachine {
             printCardsHumanPlayer();
             System.out.println("\n Tu mazo: ");
             threadPlayMachine.setHasPlayerPlayed(true);
-            System.out.println("\nTurno del enemigo");
+            System.out.println("\nTurno del rival");
         } else {
             deck.refillDeckFromDiscardPile();
             alertBox.showMessage("Mazo","Se a reiniciado el mazo");
@@ -207,12 +207,12 @@ public class GameUnoController implements IThreadSingUNOMachine {
         GameUnoStage.deleteInstance();
     }
     private void checkUno() {
-        System.out.println("\nMaquina: "+machineTime);
-        System.out.println("\nPlayer: "+playerTime);
+        System.out.println("\nRival: "+machineTime);
+        System.out.println("\nJugador: "+playerTime);
         if (machineSaidUno && playerSaidUno) {
             if (machineTime < playerTime || playerTime == 0) {
-                alertBox.showMessage("UNO","La máquina fue más rápida, toma una carta");
-                System.out.println("\nLa máquina fue más rápida, toma una carta\n");
+                alertBox.showMessage("UNO","El rival fue más rápido, toma una carta");
+                System.out.println("\nEl rival fue más rápido, toma una carta\n");
                 String playerMachime = machinePlayer.getTypePlayer();
                 gameUno.haveSingOne(playerMachime);
             } else {
