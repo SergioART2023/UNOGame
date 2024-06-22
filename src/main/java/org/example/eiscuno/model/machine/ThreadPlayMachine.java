@@ -62,13 +62,13 @@ public class ThreadPlayMachine extends Thread {
                 isWildCards(playableCard, humanPlayer);
             } else {
                 gameUno.eatCard(machinePlayer, 1);
-                alertBox.showMessage("Turno", "La máquina comió una carta, turno del jugador \uD83C\uDFC3");
+                alertBox.showMessage("Tu turno", "La máquina comió, sigue tu turno \uD83C\uDFC3");
             }
 
             unoMachine();
-            System.out.println("\nCartas de la máquina: ");
+            System.out.println("\nMazo de la máquina: ");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("No hay cartas en la mesa.");
+            System.out.println("No hay cartas en el tablero.");
         }
     }
 
@@ -76,14 +76,14 @@ public class ThreadPlayMachine extends Thread {
         this.hasPlayerPlayed = hasPlayerPlayed;
     }
     private String chooseBestColor() {
-        // Map to count cards per color
+        // Maps to count cards by color
         Map<String, Integer> colorCount = new HashMap<>();
         colorCount.put("Azul", 0);
         colorCount.put("Verde", 0);
         colorCount.put("Rojo", 0);
         colorCount.put("Amarillo", 0);
 
-        // Count cards of each color
+        // Counts cards of each color
         for (Card card : machinePlayer.getCardsPlayer()) {
             String color = card.getColor();
             if (colorCount.containsKey(color)) {
@@ -91,7 +91,7 @@ public class ThreadPlayMachine extends Thread {
             }
         }
 
-        // Find color with the most cards
+        // Finds the most cards of said color
         int maxCount = -1;
         String bestColor = "";
         for (Map.Entry<String, Integer> entry : colorCount.entrySet()) {
@@ -99,7 +99,7 @@ public class ThreadPlayMachine extends Thread {
                 maxCount = entry.getValue();
                 bestColor = entry.getKey();
             } else if (entry.getValue() == maxCount) {
-                // If tie, choose randomly between the tied colors
+                // When tied, chooses randomly between the tied colors
                 if (Math.random() < 0.5) {
                     bestColor = entry.getKey();
                 }
@@ -111,35 +111,35 @@ public class ThreadPlayMachine extends Thread {
 
     public void unoMachine() {
         if (machinePlayer.getCardsPlayer().size() == 1) {
-            alertBox.showMessage("Machina", "La maquina dijo ¡UNO! \uD83D\uDC40 ");
+            alertBox.showMessage("Enemigo", "El rival cantó UNO ");
         }
     }
     public void isWildCards(Card card, Player player){
         if (card.getValue().equals("SKIP")) {
             run();
-            System.out.println("\nLa máquina utilizó una carta de Skip.\n");
+            System.out.println("\nEl rival usó Skip.\n");
             setHasPlayerPlayed(true);
         } else if (card.getValue().equals("REVERSE")) {
             run();
             setHasPlayerPlayed(false);
-            System.out.println("\nLa máquina utilizó una carta de Reverse.\n");
+            System.out.println("\nEl rival usó Reverse.\n");
         } else if (card.getValue().equals("TWO_WILD_DRAW")) {
             gameUno.eatCard(player, 2);
-            System.out.println("\nLa máquina utilizó un TWO_WILD_DRAW, " + player.getTypePlayer() + " comió 2 cartas.\n");
+            System.out.println("\nEl rival usó TWO_WILD_DRAW, " + player.getTypePlayer() + " comió 2 cartas.\n");
             setHasPlayerPlayed(true);
         } else if (card.getValue().equals("WILD")) {
             // Select color based on most cards of that color
             String chosenColor = chooseBestColor();
-            table.setCurrentColor(chosenColor);//Falta que el color elegido por la maquina se use para que el jugador tenga que poner el mismo
-            alertBox.showMessage("Color elegido", "La máquina ha elegido el color: " + chosenColor);
+            table.setCurrentColor(chosenColor);
+            alertBox.showMessage("Wild", "El rival escogió " + chosenColor);
             setHasPlayerPlayed(true);
         } else if (card.getValue().equals("FOUR_WILD_DRAW")) {
             // Select color based on most cards of that color
             String chosenColor = chooseBestColor();
-            table.setCurrentColor(chosenColor);//Falta que el color elegido por la maquina se use para que el jugador tenga que poner el mismo
-            alertBox.showMessage("Color elegido", "La máquina ha elegido el color: " + chosenColor);
+            table.setCurrentColor(chosenColor);
+            alertBox.showMessage("+4", "El rival escogió " + chosenColor);
             gameUno.eatCard(player, 4); // Hace que el jugador humano coma 4 cartas
-            System.out.println("\nLa máquina utilizó un FOUR_WILD_DRAW, " + player.getTypePlayer() + " comió 4 cartas.\n");
+            System.out.println("\nEl rival escogió FOUR_WILD_DRAW, " + player.getTypePlayer() + " comió 4 cartas.\n");
             setHasPlayerPlayed(true);
         } else {
             setHasPlayerPlayed(true);

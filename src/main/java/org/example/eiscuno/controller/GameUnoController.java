@@ -111,10 +111,10 @@ public class GameUnoController implements IThreadSingUNOMachine {
                             printCardsHumanPlayer();
                             deck.discardCard(card);
                         } else {
-                            alertBox.showMessageError("Error", "Carta no encontrada. Intenta otra vez. \uD83C\uDCCF");
+                            alertBox.showMessageError("Error", "Esta carta no existe");
                         }
                     } else {
-                        alertBox.showMessageError("Error", "Carta inválida. Intenta otra vez. \uD83C\uDCCF");
+                        alertBox.showMessageError("Error", "No puedes poner esta carta");
                     }
                 } catch (IllegalArgumentException e) {
                     alertBox.showMessageError("Error", e.getMessage());
@@ -169,12 +169,12 @@ public class GameUnoController implements IThreadSingUNOMachine {
             humanPlayer.addCard(newCard);
             deck.discardCard(newCard);
             printCardsHumanPlayer();
-            System.out.println("\n Tus cartas: ");
+            System.out.println("\n Tu mazo: ");
             threadPlayMachine.setHasPlayerPlayed(true);
-            System.out.println("\nTurno de la maquina");
+            System.out.println("\nTurno del enemigo");
         } else {
             deck.refillDeckFromDiscardPile();
-            alertBox.showMessage("Mazo","El mazo se acabo!\nPero fue llenado nuevamente. \uD83C\uDCCF");
+            alertBox.showMessage("Mazo","Se a reiniciado el mazo");
         }
     }
     /**
@@ -185,14 +185,13 @@ public class GameUnoController implements IThreadSingUNOMachine {
     @FXML
     void onHandleUno(ActionEvent event) {
         if (humanPlayer.getCardsPlayer().size() == 1) {
-            System.out.println("\nEl jugador dijo ¡UNO!\n");
+            System.out.println("\n¡UNO!\n");
             playerTime = System.currentTimeMillis();
             playerSaidUno = true;
             checkUno();
-            // Aquí puedes añadir lógica adicional si hay reglas específicas para cuando se dice "UNO"
+
         } else {
-            alertBox.showMessageError("Error", "No puedes decir 'UNO' porque no tienes exactamente una carta. Toma una carta como penitencia. \uD83D\uDE14");
-            // Penalización: por ejemplo, el jugador debe tomar 2 cartas
+            alertBox.showMessageError("Error", "No tienes una sola carta. Come");
             gameUno.eatCard(humanPlayer, 1);
             System.out.println(" Tus cartas: ");
         }
@@ -208,17 +207,17 @@ public class GameUnoController implements IThreadSingUNOMachine {
         GameUnoStage.deleteInstance();
     }
     private void checkUno() {
-        System.out.println("\nMaquina lo dijo en "+machineTime);
-        System.out.println("\njugador lo dijo en "+playerTime);
+        System.out.println("\nMaquina: "+machineTime);
+        System.out.println("\nPlayer: "+playerTime);
         if (machineSaidUno && playerSaidUno) {
             if (machineTime < playerTime || playerTime == 0) {
-                alertBox.showMessage("UNO","¡Máquina dijo UNO más rápido! Toma una carta. \uD83C\uDCCF");
-                System.out.println("\n¡Máquina dijo UNO más rápido! Jugador debe comer una carta.\n");
+                alertBox.showMessage("UNO","La máquina fue más rápida, toma una carta");
+                System.out.println("\nLa máquina fue más rápida, toma una carta\n");
                 String playerMachime = machinePlayer.getTypePlayer();
                 gameUno.haveSingOne(playerMachime);
             } else {
-                System.out.println("\n¡Jugador dijo UNO más rápido!\n");
-                alertBox.showMessage("UNO","¡Has dicho UNO más rápido! \uD83D\uDE04");
+                System.out.println("\nUNO\n");
+                alertBox.showMessage("UNO","¡Dijiste UNO más rápido!");
             }
             machineTime = 0;
             playerTime = 0;

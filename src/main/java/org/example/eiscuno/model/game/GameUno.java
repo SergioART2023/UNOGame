@@ -133,21 +133,21 @@ public class GameUno implements IGameUno {
     public void isWildCards(Card card, ThreadPlayMachine threadPlayMachine, Player player){
         if (card.getValue() == "SKIP"){
             threadPlayMachine.setHasPlayerPlayed(false);
-            System.out.println("\nUtilizaste una carta de Skip.\n");
+            System.out.println("\nUsaste Skip.\n");
         } else if (card.getValue() =="RESERVE") {
             threadPlayMachine.setHasPlayerPlayed(false);
-            System.out.println("\nUtilizaste una carta de Reverse.\n");
+            System.out.println("\nUsaste  Reverse.\n");
         } else if (card.getValue() =="TWO_WILD_DRAW") {
             eatCard(player, 2);
-            System.out.println("\nUtilizaste un TWO_WILD_DRAW, " +player.getTypePlayer()+ " comio 2 cartas\n");
+            System.out.println("\nUsaste TWO_WILD_DRAW, " +player.getTypePlayer()+ " comio 2 cartas\n");
             threadPlayMachine.setHasPlayerPlayed(true);
         } else if (card.getValue() =="WILD") {
             //openColorSelectionDialog();//Falta que el color elegido por el jugador se use para que el jugador tenga que poner el mismo
-            System.out.println("\nUtilizaste un WILD, ");
+            System.out.println("\nUsaste WILD, ");
         }else if (card.getValue() == "FOUR_WILD_DRAW") {
             eatCard(player, 4);
             //openColorSelectionDialog();//Falta que el color elegido por el jugador se use para que el jugador tenga que poner el mismo
-            System.out.println("\nUtilizaste un FOUR_WILD_DRAW, " +player.getTypePlayer()+ " comio 2 cartas\n");
+            System.out.println("\nUsaste FOUR_WILD_DRAW, " +player.getTypePlayer()+ " comio 4 cartas\n");
             threadPlayMachine.setHasPlayerPlayed(true);
         }
         else {
@@ -163,14 +163,14 @@ public class GameUno implements IGameUno {
     private void postMoveActions(String playerType) {
         if (playerType.equals(humanPlayer.getTypePlayer())) {
             if (humanPlayer.getCardsPlayer().isEmpty()) {
-                alertBox.showMessage("GANADOR", "Has ganado! \uD83C\uDFC6");
-                System.out.println("\nFin de la partida!\n");
+                alertBox.showMessage("UNO!", "Ganaste!");
+                System.out.println("\nFin del juego\n");
                 isGameOver();
             }
         } else if (playerType.equals(machinePlayer.getTypePlayer())) {
             if (machinePlayer.getCardsPlayer().isEmpty()) {
-                alertBox.showMessage("GAME OVER", "La maquina ha ganado! \uD83E\uDD16 ");
-                System.out.println("\nFin de la partida!\n");
+                alertBox.showMessage("Juego terminado", "La maquina ha ganado");
+                System.out.println("\nFin del juego\n");
                 isGameOver();
             }
         }
